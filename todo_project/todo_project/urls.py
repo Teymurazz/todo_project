@@ -19,7 +19,7 @@ router.register(r'users', UserViewSet, basename='users')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
-    path('api/register/', UserRegisterView.as_view(), name='user-register'),  # ✅ исправлено
+    path('api/register/', UserRegisterView.as_view(), name='user-register'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
