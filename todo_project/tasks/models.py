@@ -3,10 +3,7 @@ from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
-    # Поле first_name уже есть в AbstractUser, но ты делаешь его обязательным
     first_name = models.CharField(max_length=150, blank=False)
-
-    # Удаляем метод save — валидация будет в сериализаторе
 
 
 class Task(models.Model):
