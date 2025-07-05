@@ -1,13 +1,23 @@
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-fx$t@whgd8b6p_@uxpmw#7-gfp2d7zembzrk=r$(!mg$+*8vev'
 
-DEBUG = True
+load_dotenv(dotenv_path=BASE_DIR / '.env')
+
+
+SECRET_KEY = os.getenv('SECRET_KEY')
+
+if not SECRET_KEY:
+    raise ValueError("SECRET_KEY is not set. Check your .env file.")
+
+DEBUG = os.getenv('DEBUG', 'False').lower() in ('true', '1', 't')
 
 ALLOWED_HOSTS = []
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -18,8 +28,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'tasks',
     'rest_framework',
-    'rest_framework_simplejwt'
+    'rest_framework_simplejwt',
+    'drf_spectacular',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -32,6 +44,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'todo_project.urls'
+
 
 TEMPLATES = [
     {
@@ -50,16 +63,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'todo_project.wsgi.application'
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME', 'todo_db'),
-        'USER': os.environ.get('DB_USER', 'todo_user'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', 'todo_pass'),
-        'HOST': os.environ.get('DB_HOST', 'localhost'),
+        'NAME': 'todo_db',
+        'USER': 'todo_user',
+        'PASSWORD': 'todo_pass',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
+
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -84,9 +100,11 @@ USE_I18N = True
 
 USE_TZ = True
 
+
 STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -97,7 +115,9 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
+    
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
-AUTH_USER_MODEL = 'tasks.User'
 
+AUTH_USER_MODEL = 'tasks.User'

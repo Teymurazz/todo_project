@@ -1,14 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.utils import timezone
 
 
 class User(AbstractUser):
-    
-    def save(self, *args, **kwargs):
-        if self.password and len(self.password) < 6:
-            raise ValueError("Password must be at least 6 characters")
-        super().save(*args, **kwargs)
+    # Поле first_name уже есть в AbstractUser, но ты делаешь его обязательным
+    first_name = models.CharField(max_length=150, blank=False)
+
+    # Удаляем метод save — валидация будет в сериализаторе
+
 
 class Task(models.Model):
     STATUS_CHOICES = [
@@ -24,8 +23,6 @@ class Task(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tasks')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
     def __str__(self):
         return self.title
-            
-            

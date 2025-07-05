@@ -4,6 +4,7 @@ from django.contrib.auth.password_validation import validate_password
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, min_length=6)
+    first_name = serializers.CharField(required=True)
 
     class Meta:
         model = User
@@ -13,7 +14,6 @@ class UserSerializer(serializers.ModelSerializer):
         password = validated_data['password']
         user = User.objects.create_user(
         username=validated_data['username'],
-        email=validated_data.get('email', ''),
         first_name=validated_data.get('first_name', ''),
         last_name=validated_data.get('last_name', '')
     )
