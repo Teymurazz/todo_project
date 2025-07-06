@@ -6,6 +6,9 @@ from .models import Task
 
 User = get_user_model()
 
+# Unit-тесты API задач
+
+
 class TaskAPITestCase(APITestCase):
 
     def setUp(self):
