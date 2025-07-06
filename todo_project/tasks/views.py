@@ -7,6 +7,9 @@ from rest_framework.response import Response
 
 User = get_user_model()
 
+# Вьюсеты для пользователей и задач
+
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
