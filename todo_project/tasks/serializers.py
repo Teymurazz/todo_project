@@ -2,6 +2,9 @@ from rest_framework import serializers
 from .models import User, Task
 from django.contrib.auth.password_validation import validate_password
 
+# Сериализаторы для моделей User и Task
+
+
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, min_length=6)
     first_name = serializers.CharField(required=True)
