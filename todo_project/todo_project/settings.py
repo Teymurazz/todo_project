@@ -1,3 +1,5 @@
+# Основные настройки Django с использованием переменных окружения из .env
+
 import os
 from pathlib import Path
 from dotenv import load_dotenv
