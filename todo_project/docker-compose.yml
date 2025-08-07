@@ -1,38 +1,28 @@
-# Конфигурация сервисов для запуска приложения и базы данных
-
-version: '3.9'
-
+version: "3.9"
 
 services:
   db:
-    image: postgres:14
+    image: postgres:15
     restart: always
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
     environment:
-      POSTGRES_DB: todo_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5432:5432"
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
 
   web:
     build: .
+    working_dir: /app/src
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
     ports:
       - "8000:8000"
+    env_file:
+      - .env
     depends_on:
       - db
-    environment:
-      DEBUG: 1
-      SECRET_KEY: somesecretkey
-      DB_NAME: todo_db
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-      DB_HOST: db
-      DB_PORT: 5432
 
 volumes:
-  postgres_data:
+  pgdata:
